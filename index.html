@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 一键部署</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; margin-bottom: 60px; }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle { font-size: 1.2rem; color: #8892b0; }
+        .os-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .os-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .os-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00d9ff;
+        }
+        .os-icon { font-size: 3rem; margin-bottom: 15px; }
+        .os-name { font-size: 1.5rem; margin-bottom: 10px; }
+        .os-desc { color: #8892b0; font-size: 0.9rem; margin-bottom: 20px; }
+        .command-box {
+            background: #0d1117;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            position: relative;
+        }
+        .command {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+            color: #00ff88;
+            word-break: break-all;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 217, 255, 0.2);
+            border: none;
+            color: #00d9ff;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .copy-btn:hover { background: rgba(0, 217, 255, 0.3); }
+        .copy-btn.copied { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .steps {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+        .steps h2 { margin-bottom: 30px; text-align: center; }
+        .step { display: flex; align-items: flex-start; margin-bottom: 25px; }
+        .step-number {
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            color: #1a1a2e;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        .step-content h3 { margin-bottom: 10px; }
+        .step-content p { color: #8892b0; line-height: 1.6; }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .feature { text-align: center; padding: 30px; }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .version {
+            display: inline-block;
+            background: rgba(0, 217, 255, 0.1);
+            color: #00d9ff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #8892b0;
+        }
+        footer a { color: #00d9ff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 OpenClaw 一键部署</h1>
+            <p class="subtitle">选择你的操作系统，复制命令，3 分钟完成部署</p>
+            <span class="version">最新版本：v2026.3.4</span>
+        </header>
+        
+        <div class="os-grid">
+            <div class="os-card">
+                <div class="os-icon">🍎</div>
+                <div class="os-name">macOS</div>
+                <div class="os-desc">macOS 12+ (Intel/Apple Silicon)</div>
+                <div class="command-box">
+                    <code class="command" id="cmd-macos">curl -fsSL https://your-domain.com/install-macos.sh | bash</code>
+                    <button class="copy-btn" onclick="copyCommand('macos')">复制</button>
+                </div>
+            </div>
+            
+            <div class="os-card">
+                <div class="os-icon">🐧</div>
+                <div class="os-name">Linux</div>
+                <div class="os-desc">Ubuntu/Debian/CentOS/Fedora</div>
+                <div class="command-box">
+                    <code class="command" id="cmd-linux">curl -fsSL https://your-domain.com/install-linux.sh | bash</code>
+                    <button class="copy-btn" onclick="copyCommand('linux')">复制</button>
+                </div>
+            </div>
+            
+            <div class="os-card">
+                <div class="os-icon">🪟</div>
+                <div class="os-name">Windows</div>
+                <div class="os-desc">Windows 10/11 (64 位)</div>
+                <div class="command-box">
+                    <code class="command" id="cmd-windows">iwr -useb https://your-domain.com/install-windows.ps1 | iex</code>
+                    <button class="copy-btn" onclick="copyCommand('windows')">复制</button>
+                </div>
+            </div>
+            
+            <div class="os-card">
+                <div class="os-icon">🤖</div>
+                <div class="os-name">Android</div>
+                <div class="os-desc">Android 10+ (需要 Termux)</div>
+                <div class="command-box">
+                    <code class="command" id="cmd-android">curl -fsSL https://your-domain.com/install-android.sh | bash</code>
+                    <button class="copy-btn" onclick="copyCommand('android')">复制</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="steps">
+            <h2>📋 部署步骤</h2>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>选择系统</h3>
+                    <p>点击上方对应的操作系统卡片</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>复制命令</h3>
+                    <p>点击"复制"按钮</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>打开终端</h3>
+                    <p>macOS/Linux: Terminal | Windows: PowerShell | Android: Termux</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>粘贴执行</h3>
+                    <p>粘贴命令后回车，自动完成安装</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>完成！</h3>
+                    <p>访问 http://localhost:18789 开始使用</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>3 分钟部署</h3>
+                <p>自动化安装</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <h3>安全可靠</h3>
+                <p>官方脚本</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🌍</div>
+                <h3>全平台支持</h3>
+                <p>macOS/Linux/Win/Android</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>OpenClaw Deploy | <a href="#">文档</a> · <a href="#">支持</a></p>
+        </footer>
+    </div>
+    
+    <script>
+        function copyCommand(os) {
+            const cmd = document.getElementById(`cmd-${os}`).textContent;
+            navigator.clipboard.writeText(cmd).then(() => {
+                const btn = event.target;
+                btn.textContent = '已复制!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '复制';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
